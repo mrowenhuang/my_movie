@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,25 +20,23 @@ class HomeView extends GetView<HomeController> {
           children: [
             CarouselSlider(
               items: [
-                Container(
-                  color: Colors.red,
-                  
-                ),
-                Container(
-                  color: Colors.blue,
-                ),
-                Container(
-                  color: Colors.green,
+                ImageFiltered(
+                  imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    color: Colors.amber,
+                  ),
                 ),
               ],
               options: CarouselOptions(
-                  autoPlay: true,
-                  height: size.height * .5,
-                  pauseAutoPlayOnTouch: true,
-                  autoPlayInterval: const Duration(seconds: 5),
-                  // autoPlayAnimationDuration: const Duration(seconds: 5),
-                  animateToClosest: true,
-                  enlargeCenterPage: true),
+                autoPlay: true,
+                height: size.height * .5,
+                pauseAutoPlayOnTouch: true,
+                autoPlayInterval: const Duration(seconds: 5),
+                // autoPlayAnimationDuration: const Duration(seconds: 5),
+                viewportFraction: .8,
+                animateToClosest: true,
+                enlargeCenterPage: true,
+              ),
             ),
             const SizedBox(height: 20),
             Padding(
@@ -47,6 +47,7 @@ class HomeView extends GetView<HomeController> {
                     style: TextStyle(color: MyColor.hightlightDarkest),
                     cursorColor: MyColor.hightlightDarkest,
                     decoration: InputDecoration(
+                      hintText: "Find Your Movie",
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(
@@ -63,7 +64,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       fillColor: Colors.white,
                       filled: true,
-                      contentPadding: EdgeInsets.all(20),
+                      contentPadding: const EdgeInsets.all(20),
                       suffixStyle: TextStyle(
                         color: MyColor.hightlightDarkest,
                         fontWeight: FontWeight.bold,
@@ -76,9 +77,45 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Text(
+                      'Movie >>',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: MyColor.hightlightDarkest,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * .3,
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            height: size.height * .4,
+                            width: 150,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              elevation: 10,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
