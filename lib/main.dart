@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -19,10 +20,11 @@ class MyApp extends StatelessWidget {
     return  GetMaterialApp(
       theme: ThemeData(
         useMaterial3: false,
-        textTheme: Theme.of(context).textTheme.apply(
-          bodyColor: Colors.white,
-          displayColor: Colors.white
-        )
+        // textTheme: Theme.of(context).textTheme.apply(
+        //   bodyColor: Colors.white,
+        //   displayColor: Colors.white
+        // ),
+        fontFamily: GoogleFonts.poppins().fontFamily
       ),
       title: "Application",
       initialRoute: AppPages.INITIAL,
