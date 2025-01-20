@@ -12,55 +12,200 @@ class SearchingView extends GetView<SearchingController> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: MyColor.hightlightDarkest,
-      body: ListView(
+      body: Padding(
         padding: EdgeInsets.all(20),
-        children: [
-          SizedBox(
-            width: 100,
-            child: TextField(
-              style: TextStyle(color: MyColor.hightlightDarkest),
-              cursorColor: MyColor.hightlightDarkest,
-              decoration: InputDecoration(
-                hintText: "Find Your Movie",
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(
-                    width: 2,
-                    color: MyColor.hightlightDarkest,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    style: TextStyle(color: MyColor.hightlightDarkest),
+                    cursorColor: MyColor.hightlightDarkest,
+                    decoration: InputDecoration(
+                      hintText: "Find Your Movie",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: MyColor.hightlightDarkest,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: MyColor.hightlightDarkest,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      contentPadding: const EdgeInsets.all(20),
+                      suffixStyle: TextStyle(
+                        color: MyColor.hightlightDarkest,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      suffixText: "Search",
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: 30,
+                        color: MyColor.hightlightDarkest,
+                      ),
+                    ),
+                    onChanged: (value) {
+                      print(value);
+                    },
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(
-                    width: 2,
-                    color: MyColor.hightlightDarkest,
+                const SizedBox(width: 15),
+                IconButton(
+                  onPressed: () {
+                    Get.bottomSheet(
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              width: size.width * .5,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: MyColor.hightlightDarkest,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Year",
+                                      style: TextStyle(
+                                          color: MyColor.hightlightDarkest,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Obx(
+                                      () => SizedBox(
+                                        height: size.height * .25,
+                                        width: size.width * .5,
+                                        child: Card(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: YearPicker(
+                                            currentDate:
+                                                controller.movieYear.value,
+                                            firstDate: DateTime(1970),
+                                            lastDate:
+                                                DateTime(DateTime.now().year),
+                                            selectedDate:
+                                                controller.movieYear.value,
+                                            onChanged: (value) {
+                                              controller.movieYear.value =
+                                                  value;
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "Language",
+                                      style: TextStyle(
+                                          color: MyColor.hightlightDarkest,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    DropdownMenu(
+                                      hintText: "Movie Language",
+                                      width: size.width * .35,
+                                      menuStyle: MenuStyle(
+                                        elevation: WidgetStatePropertyAll(10),
+                                        shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                      dropdownMenuEntries: const [
+                                        DropdownMenuEntry(
+                                            value: "zh", label: "China"),
+                                        DropdownMenuEntry(
+                                            value: "id", label: "Indonesia"),
+                                        DropdownMenuEntry(
+                                            value: "en", label: "English"),
+                                        DropdownMenuEntry(
+                                            value: "th", label: "Thailand"),
+                                        DropdownMenuEntry(
+                                            value: "ja", label: "Japan"),
+                                      ],
+                                      onSelected: (value) {
+                                        controller.movieLanguage.value = value;
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 40,
                   ),
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                contentPadding: const EdgeInsets.all(20),
-                suffixStyle: TextStyle(
-                  color: MyColor.hightlightDarkest,
-                  fontWeight: FontWeight.bold,
-                ),
-                suffixText: "Search",
-                prefixIcon: Icon(
-                  Icons.search,
-                  size: 30,
-                  color: MyColor.hightlightDarkest,
-                ),
-              ),
-              onChanged: (value) {
-                print(value);
-              },
+                )
+                // ElevatedButton(
+                //   onPressed: () {},
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.white,
+
+                //     fixedSize: Size(65,65),
+                //     shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(100))
+                //   ),
+                //   child: Icon(
+                //     Icons.filter,
+                //     color: MyColor.hightlightDarkest,
+                //   ),
+                // )
+                // Container(
+                //   padding: EdgeInsets.all(15),
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(100)
+                //   ),
+                //   child: Icon(Icons.filter),
+                // ),
+              ],
             ),
-          ),
-          Container(
-            
-            decoration: BoxDecoration(color: Colors.white),
-            child: Icon(Icons.filter),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

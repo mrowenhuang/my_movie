@@ -1,12 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchingController extends GetxController {
   //TODO: Implement SearchingController
 
-  final count = 0.obs;
+  var movieYear = Rx<DateTime?>(null);
+  var movieLanguage = Rx<String?>(null);
+
+  late TextEditingController searchC;
+
   @override
   void onInit() {
     super.onInit();
+
+    searchC = TextEditingController();
+
   }
 
   @override
@@ -17,7 +25,6 @@ class SearchingController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    searchC.dispose();
   }
-
-  void increment() => count.value++;
 }
