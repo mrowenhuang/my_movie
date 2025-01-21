@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:my_movie/app/controller/connection/movie_conn.dart';
-import 'package:my_movie/app/controller/dio.dart';
 import 'package:my_movie/app/data/theme/color.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_movie/app/routes/app_pages.dart';
@@ -33,7 +32,8 @@ class HomeView extends GetView<HomeController> {
                             5,
                             (index) {
                               return Image.network(
-                                'https://image.tmdb.org/t/p/original${controller.trendingMovieList.value[index].posterPath}',
+                                // ignore: invalid_use_of_protected_member
+                                'https://image.tmdb.org/t/p/w780${controller.trendingMovieList.value[index].posterPath}',
                                 fit: BoxFit.cover,
                               );
                             },
@@ -167,7 +167,7 @@ class HomeView extends GetView<HomeController> {
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                    'https://image.tmdb.org/t/p/original${controller.trendingMovieList.value[index].posterPath}',
+                                    'https://image.tmdb.org/t/p/w300${controller.trendingMovieList.value[index].posterPath}',
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -217,7 +217,7 @@ class HomeView extends GetView<HomeController> {
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      'https://image.tmdb.org/t/p/original${controller.topRatedMovieList.value[index].posterPath}',
+                                      'https://image.tmdb.org/t/p/w300${controller.topRatedMovieList.value[index].posterPath}',
                                     ),
                                     fit: BoxFit.cover,
                                   ),

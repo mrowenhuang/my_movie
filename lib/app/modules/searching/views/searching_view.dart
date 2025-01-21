@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ class SearchingView extends GetView<SearchingController> {
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -52,8 +54,8 @@ class SearchingView extends GetView<SearchingController> {
                         color: MyColor.hightlightDarkest,
                       ),
                     ),
-                    onChanged: (value) {
-                      print(value);
+                    onSubmitted: (value) {
+                      controller.getSearchingMovie(value);
                     },
                   ),
                 ),
@@ -62,6 +64,7 @@ class SearchingView extends GetView<SearchingController> {
                   onPressed: () {
                     Get.bottomSheet(
                       Container(
+                        height: size.height * .4,
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -74,14 +77,14 @@ class SearchingView extends GetView<SearchingController> {
                           children: [
                             Container(
                               margin: EdgeInsets.only(top: 10),
-                              width: size.width * .5,
-                              height: 8,
+                              width: size.width * .4,
+                              height: 5,
                               decoration: BoxDecoration(
                                 color: MyColor.hightlightDarkest,
                                 borderRadius: BorderRadius.circular(100),
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,10 +164,30 @@ class SearchingView extends GetView<SearchingController> {
                                         DropdownMenuEntry(
                                             value: "ja", label: "Japan"),
                                       ],
+                                      initialSelection:
+                                          controller.movieLanguage.value,
                                       onSelected: (value) {
                                         controller.movieLanguage.value = value;
                                       },
                                     ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Filter Status",
+                                      style: TextStyle(
+                                          color: MyColor.hightlightDarkest,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Obx(
+                                      () => CupertinoSwitch(
+                                        value: controller.filterStatus.value,
+                                        activeColor: Colors.blue,
+                                        onChanged: (value) {
+                                          controller.filterStatus.value = value;
+                                        },
+                                      ),
+                                    )
                                   ],
                                 )
                               ],
@@ -204,6 +227,99 @@ class SearchingView extends GetView<SearchingController> {
                 // ),
               ],
             ),
+            const Text(
+              "Results : 902",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+              ),
+            ),
+            Obx(
+              () => Expanded(
+                child: controller.searchingMovieList.value == null
+                    ? const Center(
+                        child: Text(
+                          "No Results",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: controller
+                                .searchingMovieList.value?.results?.length ??
+                            0,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var data = controller
+                              .searchingMovieList.value!.results![index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 120,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
+                                children: [
+                                  Material(
+                                    elevation: 10,
+                                    borderRadius: BorderRadius.circular(10),
+                                    shadowColor: Colors.black,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        "https://image.tmdb.org/t/p/w300/${data.posterPath}",
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                data.title!,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              data.originalLanguage!,
+                                            ),
+                                          ],
+                                        ),
+                                        // const SizedBox(height: ),
+                                        Expanded(
+                                          child: Text(
+                                            data.overview!,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black38),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            )
           ],
         ),
       ),
