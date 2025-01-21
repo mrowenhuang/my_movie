@@ -198,128 +198,136 @@ class SearchingView extends GetView<SearchingController> {
                     );
                   },
                   padding: EdgeInsets.zero,
-                  icon: Icon(
-                    Icons.menu,
+                  icon: const Icon(
+                    Icons.menu_rounded,
                     color: Colors.white,
                     size: 40,
                   ),
                 )
-                // ElevatedButton(
-                //   onPressed: () {},
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.white,
-
-                //     fixedSize: Size(65,65),
-                //     shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(100))
-                //   ),
-                //   child: Icon(
-                //     Icons.filter,
-                //     color: MyColor.hightlightDarkest,
-                //   ),
-                // )
-                // Container(
-                //   padding: EdgeInsets.all(15),
-                //   decoration: BoxDecoration(
-                //     color: Colors.white,
-                //     borderRadius: BorderRadius.circular(100)
-                //   ),
-                //   child: Icon(Icons.filter),
-                // ),
               ],
             ),
-            const Text(
-              "Results : 902",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 17,
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.topRight,
+              child: const Text(
+                "Results : 902",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
               ),
             ),
             Obx(
               () => Expanded(
-                child: controller.searchingMovieList.value == null
+                child: controller.searchingMovieList.value == null ||
+                        controller.searchingMovieList.value!.results!.isEmpty
                     ? const Center(
                         child: Text(
                           "No Results",
                           style: TextStyle(color: Colors.white),
                         ),
                       )
-                    : ListView.builder(
-                        itemCount: controller
-                                .searchingMovieList.value?.results?.length ??
-                            0,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var data = controller
-                              .searchingMovieList.value!.results![index];
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 8),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              height: 120,
-                              width: size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
-                                children: [
-                                  Material(
-                                    elevation: 10,
-                                    borderRadius: BorderRadius.circular(10),
-                                    shadowColor: Colors.black,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        "https://image.tmdb.org/t/p/w300/${data.posterPath}",
-                                      ),
+                    : Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: controller.searchingMovieList.value
+                                      ?.results?.length ??
+                                  0,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var data = controller
+                                    .searchingMovieList.value!.results![index];
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 8),
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    height: 130,
+                                    width: size.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
                                     ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    child: Row(
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                data.title!,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              data.originalLanguage!,
-                                            ),
-                                          ],
-                                        ),
-                                        // const SizedBox(height: ),
-                                        Expanded(
-                                          child: Text(
-                                            data.overview!,
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.black38),
+                                        Material(
+                                          elevation: 10,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          shadowColor: Colors.black,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: data.posterPath == null
+                                                ? Image.asset(
+                                                    "assets/icons/404-error.png")
+                                                : Image.network(
+                                                    "https://image.tmdb.org/t/p/w300/${data.posterPath}",
+                                                  ),
                                           ),
                                         ),
+                                        const SizedBox(width: 15),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      data.title!,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    data.originalLanguage!,
+                                                  ),
+                                                ],
+                                              ),
+                                              // const SizedBox(height: ),
+                                              Expanded(
+                                                child: Text(
+                                                  data.overview!,
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color: Colors.black38),
+                                                ),
+                                              ),
+                                              Text(
+                                                'Release Date : ${data.releaseDate}',
+                                              )
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       ),
               ),
-            )
+            ),
+            // ListView.builder(
+            //   itemCount: 2,
+            //   itemBuilder: (context, index) {
+            //     return Text("data");
+            //   },
+            // )
           ],
         ),
       ),
