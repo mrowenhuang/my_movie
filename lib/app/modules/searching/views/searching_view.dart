@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:get/get.dart';
 import 'package:my_movie/app/data/theme/color.dart';
@@ -11,6 +12,7 @@ class SearchingView extends GetView<SearchingController> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("reload");
     return Scaffold(
       backgroundColor: MyColor.hightlightDarkest,
       body: Padding(
@@ -22,6 +24,7 @@ class SearchingView extends GetView<SearchingController> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: controller.searchC,
                     style: TextStyle(color: MyColor.hightlightDarkest),
                     cursorColor: MyColor.hightlightDarkest,
                     decoration: InputDecoration(
@@ -54,11 +57,15 @@ class SearchingView extends GetView<SearchingController> {
                         color: MyColor.hightlightDarkest,
                       ),
                     ),
-                    onSubmitted: (value) {
-                      controller.getSearchingMovie(value);
-                    },
                   ),
                 ),
+                ElevatedButton(
+                    onPressed: () {
+                      controller.getSearchingMovie(
+                          controller.searchC.text, 1.toString());
+                      controller.activePage.value = 1;
+                    },
+                    child: Text("test")),
                 const SizedBox(width: 15),
                 IconButton(
                   onPressed: () {
@@ -100,32 +107,29 @@ class SearchingView extends GetView<SearchingController> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 10),
-                                    Obx(
-                                      () => SizedBox(
-                                        height: size.height * .25,
-                                        width: size.width * .5,
-                                        child: Card(
-                                          elevation: 10,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: YearPicker(
-                                            currentDate:
-                                                controller.movieYear.value,
-                                            firstDate: DateTime(1970),
-                                            lastDate:
-                                                DateTime(DateTime.now().year),
-                                            selectedDate:
-                                                controller.movieYear.value,
-                                            onChanged: (value) {
-                                              controller.movieYear.value =
-                                                  value;
-                                            },
-                                          ),
+                                    SizedBox(
+                                      height: size.height * .25,
+                                      width: size.width * .5,
+                                      child: Card(
+                                        elevation: 10,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: YearPicker(
+                                          currentDate:
+                                              controller.movieYear.value,
+                                          firstDate: DateTime(1970),
+                                          lastDate:
+                                              DateTime(DateTime.now().year),
+                                          selectedDate:
+                                              controller.movieYear.value,
+                                          onChanged: (value) {
+                                            controller.movieYear.value = value;
+                                          },
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(width: 10),
@@ -179,15 +183,13 @@ class SearchingView extends GetView<SearchingController> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 10),
-                                    Obx(
-                                      () => CupertinoSwitch(
-                                        value: controller.filterStatus.value,
-                                        activeColor: Colors.blue,
-                                        onChanged: (value) {
-                                          controller.filterStatus.value = value;
-                                        },
-                                      ),
-                                    )
+                                    CupertinoSwitch(
+                                      value: controller.filterStatus.value,
+                                      activeColor: Colors.blue,
+                                      onChanged: (value) {
+                                        controller.filterStatus.value = value;
+                                      },
+                                    ),
                                   ],
                                 )
                               ],
@@ -206,122 +208,239 @@ class SearchingView extends GetView<SearchingController> {
                 )
               ],
             ),
-            SizedBox(height: 10),
-            Align(
-              alignment: Alignment.topRight,
-              child: const Text(
-                "Results : 902",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                ),
-              ),
-            ),
-            Obx(
-              () => Expanded(
-                child: controller.searchingMovieList.value == null ||
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                controller.searchingMovieList.value == null ||
                         controller.searchingMovieList.value!.results!.isEmpty
-                    ? const Center(
-                        child: Text(
-                          "No Results",
-                          style: TextStyle(color: Colors.white),
+                    ? SizedBox()
+                    : Text(
+                        "Page : ${controller.activePage} / ${controller.searchingMovieList.value?.totalPages}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
                         ),
-                      )
-                    : Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: controller.searchingMovieList.value
-                                      ?.results?.length ??
-                                  0,
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                var data = controller
-                                    .searchingMovieList.value!.results![index];
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 8),
-                                  child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    height: 130,
-                                    width: size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Material(
-                                          elevation: 10,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          shadowColor: Colors.black,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: data.posterPath == null
-                                                ? Image.asset(
-                                                    "assets/icons/404-error.png")
-                                                : Image.network(
-                                                    "https://image.tmdb.org/t/p/w300/${data.posterPath}",
-                                                  ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 15),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                      ),
+                Text(
+                  "Results : ${controller.searchingMovieList.value?.totalResults ?? 0}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  controller.searchingMovieList.value == null ||
+                          controller.searchingMovieList.value!.results!.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "No Results",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: controller.searchingMovieList
+                                            .value?.results?.length ??
+                                        0,
+                                    padding: EdgeInsets.zero,
+                                    physics: BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      var data = controller.searchingMovieList
+                                          .value!.results![index];
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 8),
+                                        child: Slidable(
+                                          endActionPane: ActionPane(
+                                            motion: ScrollMotion(),
                                             children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      data.title!,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
+                                              // SlidableAction(
+
+                                              //   onPressed: (context) {},
+                                              //   borderRadius:
+                                              //       BorderRadius.circular(
+                                              //           15),
+                                              //   backgroundColor:
+                                              //       Color(0xFFFE4A49),
+                                              //   foregroundColor:
+                                              //       Colors.white,
+                                              //   icon: Icons.delete,
+                                              //   label: 'Delete',
+                                              // ),
+                                              GestureDetector(
+                                                onTap: () {},
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 20),
+                                                  width: 100,
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      15,
                                                     ),
+                                                    color: Colors.white,
                                                   ),
-                                                  Text(
-                                                    data.originalLanguage!,
+                                                  child: const Icon(
+                                                    Icons.bookmark_add_outlined,
+                                                    color: Colors.yellow,
+                                                    size: 50,
                                                   ),
-                                                ],
-                                              ),
-                                              // const SizedBox(height: ),
-                                              Expanded(
-                                                child: Text(
-                                                  data.overview!,
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      color: Colors.black38),
                                                 ),
-                                              ),
-                                              Text(
-                                                'Release Date : ${data.releaseDate}',
                                               )
                                             ],
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            height: 130,
+                                            width: size.width,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Material(
+                                                  elevation: 10,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  shadowColor: Colors.black,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: data.posterPath ==
+                                                            null
+                                                        ? Image.asset(
+                                                            "assets/icons/404-error.png")
+                                                        : Image.network(
+                                                            "https://image.tmdb.org/t/p/w300/${data.posterPath}",
+                                                          ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 15),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              data.title!,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            data.originalLanguage!,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      // const SizedBox(height: ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          data.overview!,
+                                                          maxLines: 3,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'Release Date : ${data.releaseDate}',
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                  const SizedBox(height: 10),
+                  controller.searchingMovieList.value?.totalPages != null &&
+                          controller.searchingMovieList.value!.totalPages! > 1
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                controller.activePage.value > 1
+                                    ? controller.getSearchingMovie(
+                                        controller.searchC.text,
+                                        (controller.activePage.value -= 1)
+                                            .toString())
+                                    : null;
+                              },
+                              padding: EdgeInsets.zero,
+                              splashRadius: 25,
+                              icon: Icon(
+                                Icons.arrow_back_ios_rounded,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            IconButton(
+                              splashRadius: 25,
+                              onPressed: () {
+                                controller.activePage.value <
+                                        controller.searchingMovieList.value!
+                                            .totalPages!
+                                    ? controller.getSearchingMovie(
+                                        controller.searchC.text,
+                                        (controller.activePage.value += 1)
+                                            .toString(),
+                                      )
+                                    : null;
+                              },
+                              padding: EdgeInsets.zero,
+                              icon: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
+                ],
               ),
             ),
+
             // ListView.builder(
             //   itemCount: 2,
             //   itemBuilder: (context, index) {

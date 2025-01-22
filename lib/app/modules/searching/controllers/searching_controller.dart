@@ -8,14 +8,19 @@ class SearchingController extends GetxController {
 
   var movieYear = Rx<DateTime?>(null);
   var movieLanguage = Rx<String?>(null);
-  var filterStatus = Rx<bool>(false);
+  var filterStatus = false.obs;
+  var activePage = Rx<int>(1);
 
   late TextEditingController searchC;
 
   var searchingMovieList = Rx<SearchMovie?>(null);
 
-  Future getSearchingMovie(String movie) async {
-    searchingMovieList.value = await MovieConn().getSearchingMovie(movie: movie, page: "1");
+  Future getSearchingMovie(String movie, String page) async {
+    print(page);
+    searchingMovieList.value =
+        await MovieConn().getSearchingMovie(movie: movie, page: page);
+    // print(searchingMovieList.value?.totalResults);
+    print("printed");
   }
 
   @override
