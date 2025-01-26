@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:my_movie/app/controller/dio.dart';
+import 'package:my_movie/app/controller/connection/dio.dart';
 import 'package:my_movie/app/data/models/movie_model.dart';
 import 'package:my_movie/app/data/models/search_movie_model.dart';
 
@@ -36,7 +36,7 @@ class MovieConn {
     }
   }
 
-  Future getSearchingMovie({String? movie, String page = "1"}) async {
+  Future getSearchingMovie(String movie, String page) async {
     final response = await _dio.get('3/search/movie?query=$movie&page=$page');
 
     if (response.statusCode == 200) {

@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:my_movie/app/controller/connection/movie_conn.dart';
+import 'package:my_movie/app/controller/my_movie_controller.dart';
 import 'package:my_movie/app/data/theme/color.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_movie/app/routes/app_pages.dart';
@@ -14,6 +13,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final movieC = Get.find<MyMovieController>();
     return Scaffold(
       backgroundColor: MyColor.hightlightDarkest,
       body: SingleChildScrollView(
@@ -89,6 +89,7 @@ class HomeView extends GetView<HomeController> {
                           children: [
                             ElevatedButton.icon(
                               onPressed: () {
+                                movieC.clearData();
                                 Get.toNamed(Routes.SEARCHING);
                               },
                               label: Text("search"),
@@ -101,7 +102,7 @@ class HomeView extends GetView<HomeController> {
                             const SizedBox(height: 10),
                             ElevatedButton.icon(
                               onPressed: () async {
-                                await MovieConn().getTrendingMovie();
+                                Get.toNamed(Routes.WATCHLIST);
                               },
                               label: Text("Watchlist"),
                               icon: Icon(Icons.star),
@@ -167,7 +168,7 @@ class HomeView extends GetView<HomeController> {
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                    'https://image.tmdb.org/t/p/w300${controller.trendingMovieList.value[index].posterPath}',
+                                    'https://image.tmdb.org/t/p/w300${controller.trendingMovieList[index].posterPath}',
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -188,13 +189,52 @@ class HomeView extends GetView<HomeController> {
                     ),
                     const SizedBox(height: 10),
 
-                    Text(
-                      'Top Rated',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Country / Year',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Text(
+                                'See More >>',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            side: BorderSide(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "Setting",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(height: 10),
                     SizedBox(
@@ -217,7 +257,7 @@ class HomeView extends GetView<HomeController> {
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      'https://image.tmdb.org/t/p/w300${controller.topRatedMovieList.value[index].posterPath}',
+                                      'https://image.tmdb.org/t/p/w300${controller.topRatedMovieList[index].posterPath}',
                                     ),
                                     fit: BoxFit.cover,
                                   ),

@@ -12,7 +12,7 @@ class HomeController extends GetxController {
     trendingMovieList.value = await MovieConn().getTrendingMovie();
   }
 
-  Future gettopRatedMovie() async {
+  Future getTargettingCountryMovie() async {
     topRatedMovieList.value = await MovieConn().getTopRatedMovie();
   }
 
@@ -20,7 +20,7 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     await getTrendingMovie();
-    await gettopRatedMovie();
+    await getTargettingCountryMovie();
   }
 
   @override

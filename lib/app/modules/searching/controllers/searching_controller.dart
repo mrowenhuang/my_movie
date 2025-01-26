@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_movie/app/controller/connection/movie_conn.dart';
-import 'package:my_movie/app/data/models/search_movie_model.dart';
 
-class SearchingController extends GetxController {
+class SearchingController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  late AnimationController animationController;
   //TODO: Implement SearchingController
 
   var movieYear = Rx<DateTime?>(null);
@@ -13,21 +13,14 @@ class SearchingController extends GetxController {
 
   late TextEditingController searchC;
 
-  var searchingMovieList = Rx<SearchMovie?>(null);
-
-  Future getSearchingMovie(String movie, String page) async {
-    print(page);
-    searchingMovieList.value =
-        await MovieConn().getSearchingMovie(movie: movie, page: page);
-    // print(searchingMovieList.value?.totalResults);
-    print("printed");
-  }
-
   @override
   void onInit() {
     super.onInit();
-
     searchC = TextEditingController();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
   }
 
   @override
@@ -39,5 +32,6 @@ class SearchingController extends GetxController {
   void onClose() {
     super.onClose();
     searchC.dispose();
+    animationController.dispose();
   }
 }
