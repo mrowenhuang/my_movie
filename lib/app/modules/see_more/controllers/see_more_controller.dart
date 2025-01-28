@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
-  //TODO: Implement HomeController
+class SeeMoreController extends GetxController {
+  //TODO: Implement SeeMoreController
+
+  var activePage = Rx<int>(1);
+
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
   }
 
@@ -17,4 +20,5 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
 }

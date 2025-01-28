@@ -1,19 +1,19 @@
 import 'package:my_movie/app/data/models/movie_model.dart';
 
-class SearchMovie {
+class AllMovieData {
   num? page;
   List<Movie>? results;
   num? totalPages;
   num? totalResults;
 
-  SearchMovie({
+  AllMovieData({
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
 
-  SearchMovie.fromJson(Map<String, dynamic> json) {
+  AllMovieData.fromJson(Map<String, dynamic> json) {
     page = json['page'] as num?;
     if (json['results'] != null) {
       results = <Movie>[];
@@ -24,6 +24,8 @@ class SearchMovie {
     totalPages = json['total_pages'] as num?;
     totalResults = json['total_results'] as num?;
   }
+
+  get length => null;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

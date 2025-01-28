@@ -12,9 +12,8 @@ class MovieDetailView extends GetView<MovieDetailController> {
   @override
   Widget build(BuildContext context) {
     final movieC = Get.find<MyMovieController>();
-    final _bigScrollController = ScrollController();
-    final _smallScrollController = ScrollController();
-    final Movie detailData = movieC.findMovieDetail(Get.arguments);
+    final arguments = Get.arguments;
+    final Movie detailData = movieC.findMovieDetail(arguments["id"],arguments['cases']);
     return Scaffold(
       backgroundColor: MyColor.hightlightDarkest,
       appBar: AppBar(
@@ -88,13 +87,13 @@ class MovieDetailView extends GetView<MovieDetailController> {
                               const SizedBox(height: 5),
                               Expanded(
                                 child: Scrollbar(
-                                  controller: _smallScrollController,
+                                  controller: controller.smallScrollController,
                                   scrollbarOrientation:
                                       ScrollbarOrientation.left,
                                   thumbVisibility: true,
                                   child: ListView.builder(
                                     physics: BouncingScrollPhysics(),
-                                    controller: _smallScrollController,
+                                    controller: controller.smallScrollController,
                                     itemCount: detailData.genreIds!.length,
                                     itemBuilder: (context, index) {
                                       return Text(
@@ -124,10 +123,10 @@ class MovieDetailView extends GetView<MovieDetailController> {
                         Expanded(
                           child: Scrollbar(
                             scrollbarOrientation: ScrollbarOrientation.left,
-                            controller: _bigScrollController,
+                            controller: controller.bigScrollController,
                             thumbVisibility: true,
                             child: ListView(
-                              controller: _bigScrollController,
+                              controller: controller.bigScrollController,
                               physics: const BouncingScrollPhysics(),
                               children: [
                                 Text(

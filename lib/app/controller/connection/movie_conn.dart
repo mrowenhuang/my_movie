@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:my_movie/app/controller/connection/dio.dart';
 import 'package:my_movie/app/data/models/movie_model.dart';
 import 'package:my_movie/app/data/models/search_movie_model.dart';
@@ -12,11 +11,7 @@ class MovieConn {
 
     if (response.statusCode == 200) {
       // print(response.data['results']);
-      return (response.data['results'] as List)
-          .map(
-            (e) => Movie.fromJson(e),
-          )
-          .toList();
+      return AllMovieData.fromJson(response.data);
     } else {
       print(response.statusCode);
     }
@@ -40,23 +35,19 @@ class MovieConn {
     final response = await _dio.get('3/search/movie?query=$movie&page=$page');
 
     if (response.statusCode == 200) {
-      return SearchMovie.fromJson(response.data);
+      return AllMovieData.fromJson(response.data);
     } else {
       print(response.statusCode);
     }
   }
 
-  Future getFilterMovie(
+  Future getLanguageMovie(
       {String? year, String? language, String page = "1"}) async {
     final response = await _dio.get(
-        '3/discover/movie?language=en-US&sort_by=popularity.desc&page=1&primary_release_year=2020&with_original_language=zh');
+        '3/discover/movie?language=en-US&sort_by=popularity.desc&page=$page&primary_release_year=$year&with_original_language=$language');
 
     if (response.statusCode == 200) {
-      return (response.data['results'] as List)
-          .map(
-            (e) => Movie.fromJson(e),
-          )
-          .toList();
+      return AllMovieData.fromJson(response.data);
     } else {
       print(response.statusCode);
     }

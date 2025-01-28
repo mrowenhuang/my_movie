@@ -6,6 +6,8 @@ import '../modules/movie_detail/bindings/movie_detail_binding.dart';
 import '../modules/movie_detail/views/movie_detail_view.dart';
 import '../modules/searching/bindings/searching_binding.dart';
 import '../modules/searching/views/searching_view.dart';
+import '../modules/see_more/bindings/see_more_binding.dart';
+import '../modules/see_more/views/see_more_view.dart';
 import '../modules/watchlist/bindings/watchlist_binding.dart';
 import '../modules/watchlist/views/watchlist_view.dart';
 
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.MOVIE_DETAIL,
       page: () => const MovieDetailView(),
       binding: MovieDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEE_MORE,
+      page: () => const SeeMoreView(),
+      binding: SeeMoreBinding(),
     ),
   ];
 }

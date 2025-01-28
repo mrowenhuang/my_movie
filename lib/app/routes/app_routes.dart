@@ -7,6 +7,7 @@ abstract class Routes {
   static const SEARCHING = _Paths.SEARCHING;
   static const WATCHLIST = _Paths.WATCHLIST;
   static const MOVIE_DETAIL = _Paths.MOVIE_DETAIL;
+  static const SEE_MORE = _Paths.SEE_MORE;
 }
 
 abstract class _Paths {
@@ -15,4 +16,5 @@ abstract class _Paths {
   static const SEARCHING = '/searching';
   static const WATCHLIST = '/watchlist';
   static const MOVIE_DETAIL = '/movie-detail';
+  static const SEE_MORE = '/see-more';
 }

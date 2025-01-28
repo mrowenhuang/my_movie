@@ -1,12 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class MovieDetailController extends GetxController {
   //TODO: Implement MovieDetailController
 
-  final count = 0.obs;
+  late ScrollController bigScrollController;
+  late ScrollController smallScrollController;
+
   @override
   void onInit() {
     super.onInit();
+    bigScrollController = ScrollController();
+    smallScrollController = ScrollController();
   }
 
   @override
@@ -17,7 +22,7 @@ class MovieDetailController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    bigScrollController.dispose();
+    smallScrollController.dispose();
   }
-
-  void increment() => count.value++;
 }

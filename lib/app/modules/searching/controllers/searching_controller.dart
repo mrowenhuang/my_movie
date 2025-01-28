@@ -19,7 +19,7 @@ class SearchingController extends GetxController
     searchC = TextEditingController();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
     );
   }
 

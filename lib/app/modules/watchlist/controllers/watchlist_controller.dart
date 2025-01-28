@@ -11,10 +11,9 @@ class WatchlistController extends GetxController {
   var watchList = RxList<Movie?>.empty();
 
   void restoreData() {
-    if (box.read('movieList').runtimeType != List<dynamic>) {
+    if ((box.read('movieList').runtimeType != List<dynamic>) && box.read('movieList') != null) {
       watchList = box.read('movieList');
     }
-    // print(box.read('movieList'));
   }
 
   @override
@@ -22,7 +21,6 @@ class WatchlistController extends GetxController {
     super.onInit();
     // print
     restoreData();
-    // watchList = box.read('movieList');
   }
 
   @override
