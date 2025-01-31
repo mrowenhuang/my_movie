@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:my_movie/app/controller/my_movie_controller.dart';
 import 'package:my_movie/app/data/theme/color.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -31,6 +33,11 @@ class HomeView extends GetView<HomeController> {
           child: Obx(
             () => Column(
               children: [
+                ElevatedButton(
+                    onPressed: () {
+                      print(movieC.watchList);
+                    },
+                    child: Text("test button")),
                 Stack(
                   children: [
                     movieC.trendingMovieList.value == null
@@ -178,8 +185,7 @@ class HomeView extends GetView<HomeController> {
                               posterPath: data.posterPath,
                               id: data.id!.toInt(),
                               doubleFavTap: () {
-                                movieC.addWatchlist(
-                                    data, index, movieC.trendingMovieList);
+                                // movies
                               },
                             );
                           },
@@ -461,37 +467,44 @@ class HomeView extends GetView<HomeController> {
                           itemBuilder: (context, index) {
                             var data =
                                 movieC.languageMovieList.value?.results?[index];
+                            for (var element in movieC.watchList) {
+                              if (element!.id == data!.id!) {
+                                data.fav = true;
+                              }
+                            }
                             return GetBuilder(
-                                init: movieC,
-                                builder: (context) {
-                                  return Stack(
-                                    children: [
-                                      MovieBannerList(
-                                        id: data!.id!.toInt(),
-                                        cases: 2,
-                                        index: index,
-                                        posterPath: data.posterPath,
-                                        doubleFavTap: () {
-                                          movieC.addWatchlist(
-                                            data,
-                                            index,
-                                            movieC.languageMovieList,
-                                          );
-                                        },
+                              init: movieC,
+                              builder: (context) {
+                                return Stack(
+                                  children: [
+                                    MovieBannerList(
+                                      id: data!.id!.toInt(),
+                                      cases: 2,
+                                      index: index,
+                                      posterPath: data.posterPath,
+                                      doubleFavTap: () {
+                                        movieC.addWatchlist(
+                                          data,
+                                          index,
+                                          movieC.languageMovieList,
+                                        );
+                                      },
+                                    ),
+                                    AnimatedPositioned(
+                                      top: data.fav ? 0 : -50,
+                                      curve: Curves.easeIn,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      child: Icon(
+                                        Icons.bookmark,
+                                        size: 30,
+                                        color: MyColor.hightlightLight,
                                       ),
-                                      AnimatedPositioned(
-                                        top: data.fav ? 0 : -50,
-                                        curve: Curves.easeIn,
-                                        duration: Duration(milliseconds: 500),
-                                        child: Icon(
-                                          Icons.bookmark,
-                                          size: 30,
-                                          color: MyColor.hightlightLight,
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                },);
+                                    )
+                                  ],
+                                );
+                              },
+                            );
                           },
                         ),
                       ),

@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:my_movie/app/controller/connection/movie_conn.dart';
 import 'package:my_movie/app/data/models/movie_model.dart';
 import 'package:my_movie/app/data/models/search_movie_model.dart';
@@ -14,6 +17,7 @@ class MyMovieController extends GetxController {
   var movieYear = Rx<int?>(2025);
   var movieLanguageId = Rx<String?>("id");
   var movieLanguage = Rx<String?>("Indonesia");
+  var movieScheduleDescription = Rx<DateTime?>(null);
 
   void switchId(countryId) {
     switch (countryId) {
@@ -49,11 +53,8 @@ class MyMovieController extends GetxController {
       {String? year = "2025",
       String? language = "id",
       String page = "1"}) async {
-    languageMovieList.value = await MovieConn().getLanguageMovie(
-      language: language,
-      year: year,
-      page: page
-    );
+    languageMovieList.value = await MovieConn()
+        .getLanguageMovie(language: language, year: year, page: page);
   }
 
   Movie findMovieDetail(int id, int cases) {
@@ -167,22 +168,85 @@ class MyMovieController extends GetxController {
 
   void addWatchlist(Movie data, int index, dynamic movieType) {
     var status = watchList.any((element) => element!.id == data.id);
-
     if (status) {
       movieType.value!.results![index].fav =
           !movieType.value!.results![index].fav;
+
+      movieType.value!.results![index].description = null;
+
       update();
 
       watchList.removeWhere(
         (element) => element!.id == data.id,
       );
     } else {
-      movieType.value!.results![index].fav =
-          !movieType.value!.results![index].fav;
+      showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                20,
+              ),
+            ),
+            title: Text("Schedule Date & Time"),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  movieType.value!.results![index].fav =
+                      !movieType.value!.results![index].fav;
 
-      update();
-      watchList.add(data);
-      box.write("movieList", watchList);
+                  movieType.value!.results![index].description =
+                      DateFormat('yyyy-MM-dd – kk:mm')
+                          .format(movieScheduleDescription.value!);
+
+                  update();
+                  watchList.add(data);
+                  box.write("movieList",
+                      watchList.map((element) => element!.toJson()).toList());
+                  Get.back();
+                },
+                child: Text('Save'),
+              )
+            ],
+            content: Material(
+              elevation: 10,
+              child: SizedBox(
+                height: 300,
+                width: 300,
+                child: CupertinoDatePicker(
+                  use24hFormat: true,
+                  onDateTimeChanged: (value) {
+                    movieScheduleDescription.value = value;
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void removefromWatchList(
+    Movie data,
+  ) {
+    for (var element in watchList) {
+      if (element!.id == data.id) {
+        element.fav = false;
+        element.description = null;
+        update();
+        watchList.removeWhere(
+        (element) => element!.id == data.id,
+      );
+      }
+    }
+  }
+
+  void loadWatchList() {
+    if (box.read('movieList') != null) {
+      var rawData = box.read('movieList') as List;
+      watchList.value = rawData.map((e) => Movie.fromJson(e)).toList();
     }
   }
 
@@ -211,6 +275,7 @@ class MyMovieController extends GetxController {
   void onInit() async {
     super.onInit();
     loadIdAndLanguage();
+    loadWatchList();
     await getTrendingMovie();
     await getTargettinglanguageMovie(
       language: box.read('language') ?? "id",

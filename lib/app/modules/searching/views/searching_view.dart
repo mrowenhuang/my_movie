@@ -301,12 +301,12 @@ class SearchingView extends GetView<SearchingController> {
                                                     onTap: () {
                                                       // data.fav = !data.fav;
 
-                                                      movieC.addWatchlist(
-                                                        data,
-                                                        index,
-                                                        movieC
-                                                            .searchingMovieList,
-                                                      );
+                                                      // movieC.addWatchlist(
+                                                      //   data,
+                                                      //   index,
+                                                      //   movieC
+                                                      //       .searchingMovieList,
+                                                      // );
 
                                                       // movieC
                                                       //     .addToListAndStorage(

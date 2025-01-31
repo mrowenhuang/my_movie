@@ -14,173 +14,181 @@ class MovieDetailView extends GetView<MovieDetailController> {
     final movieC = Get.find<MyMovieController>();
     final arguments = Get.arguments;
     final Movie detailData = movieC.findMovieDetail(arguments["id"],arguments['cases']);
-    return Scaffold(
-      backgroundColor: MyColor.hightlightDarkest,
-      appBar: AppBar(
-        title: const Text('Movie Detail'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: [
+          MyColor.hightlightLight.withOpacity(.7),
+          MyColor.hightlightDarkest,
+        ])
       ),
-      body: LayoutBuilder(
-        builder: (context, constrain) {
-          return Padding(
-            padding: const EdgeInsets.all(20),
-            child: Stack(
-              children: [
-                // Text(detailData.title!),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    width: constrain.maxWidth * .8,
-                    height: constrain.maxHeight * .8,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: constrain.maxWidth * .3,
-                          height: constrain.maxHeight * .28,
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Text(
-                                  detailData.originalLanguage!,
-                                ),
-                              ),
-                              Text(
-                                detailData.title!,
-                                textAlign: TextAlign.end,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 5),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Text(
-                                  detailData.releaseDate!,
-                                  style: const TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              const Align(
-                                alignment: Alignment.topRight,
-                                child: Text(
-                                  "Genre",
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Expanded(
-                                child: Scrollbar(
-                                  controller: controller.smallScrollController,
-                                  scrollbarOrientation:
-                                      ScrollbarOrientation.left,
-                                  thumbVisibility: true,
-                                  child: ListView.builder(
-                                    physics: BouncingScrollPhysics(),
-                                    controller: controller.smallScrollController,
-                                    itemCount: detailData.genreIds!.length,
-                                    itemBuilder: (context, index) {
-                                      return Text(
-                                        detailData.genreIds![index],
-                                        textAlign: TextAlign.end,
-                                        style: TextStyle(),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "Movie Overview : ",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Expanded(
-                          child: Scrollbar(
-                            scrollbarOrientation: ScrollbarOrientation.left,
-                            controller: controller.bigScrollController,
-                            thumbVisibility: true,
-                            child: ListView(
-                              controller: controller.bigScrollController,
-                              physics: const BouncingScrollPhysics(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('Movie Detail'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: LayoutBuilder(
+          builder: (context, constrain) {
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Stack(
+                children: [
+                  // Text(detailData.title!),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      width: constrain.maxWidth * .8,
+                      height: constrain.maxHeight * .8,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: constrain.maxWidth * .3,
+                            height: constrain.maxHeight * .28,
+                            child: Column(
                               children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    detailData.originalLanguage!,
+                                  ),
+                                ),
                                 Text(
-                                  detailData.overview!,
-                                  textAlign: TextAlign.right,
+                                  detailData.title!,
+                                  textAlign: TextAlign.end,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 5),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    detailData.releaseDate!,
+                                    style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "Genre",
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Expanded(
+                                  child: Scrollbar(
+                                    controller: controller.smallScrollController,
+                                    scrollbarOrientation:
+                                        ScrollbarOrientation.left,
+                                    thumbVisibility: true,
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      controller: controller.smallScrollController,
+                                      itemCount: detailData.genreIds!.length,
+                                      itemBuilder: (context, index) {
+                                        return Text(
+                                          detailData.genreIds![index],
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Material(
-                    elevation: 20,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                      ),
-                      child: Stack(
-                        children: [
-                          SizedBox(
-                            height: constrain.maxHeight * .42,
-                            width: constrain.maxWidth * .53,
-                            child: Image.network(
-                              'https://image.tmdb.org/t/p/w780/${detailData.posterPath}',
-                              fit: BoxFit.cover,
+                          const Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Movie Overview : ",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: Scrollbar(
+                              scrollbarOrientation: ScrollbarOrientation.left,
+                              controller: controller.bigScrollController,
+                              thumbVisibility: true,
+                              child: ListView(
+                                controller: controller.bigScrollController,
+                                physics: const BouncingScrollPhysics(),
+                                children: [
+                                  Text(
+                                    detailData.overview!,
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                )
-                // Row(
-                //   children: [
-                //
-                //   ],
-                // ),
-              ],
-            ),
-          );
-        },
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Material(
+                      elevation: 20,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                        ),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              height: constrain.maxHeight * .42,
+                              width: constrain.maxWidth * .53,
+                              child: Image.network(
+                                'https://image.tmdb.org/t/p/w780/${detailData.posterPath}',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                  // Row(
+                  //   children: [
+                  //
+                  //   ],
+                  // ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
