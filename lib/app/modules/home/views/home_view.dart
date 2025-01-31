@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:my_movie/app/controller/my_movie_controller.dart';
 import 'package:my_movie/app/data/theme/color.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -33,11 +31,11 @@ class HomeView extends GetView<HomeController> {
           child: Obx(
             () => Column(
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      print(movieC.watchList);
-                    },
-                    child: Text("test button")),
+                // ElevatedButton(
+                //     onPressed: () {
+                //       print(movieC.watchList);
+                //     },
+                //     child: Text("test button")),
                 Stack(
                   children: [
                     movieC.trendingMovieList.value == null
