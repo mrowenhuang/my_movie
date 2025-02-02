@@ -465,41 +465,45 @@ class HomeView extends GetView<HomeController> {
                           itemBuilder: (context, index) {
                             var data =
                                 movieC.languageMovieList.value?.results?[index];
-                            for (var element in movieC.watchList) {
-                              if (element!.id == data!.id!) {
-                                data.fav = true;
-                              }
-                            }
-                            return GetBuilder(
-                              init: movieC,
-                              builder: (context) {
-                                return Stack(
-                                  children: [
-                                    MovieBannerList(
-                                      id: data!.id!.toInt(),
-                                      cases: 2,
-                                      index: index,
-                                      posterPath: data.posterPath,
-                                      doubleFavTap: () {
-                                        movieC.addWatchlist(
-                                          data,
-                                          index,
-                                          movieC.languageMovieList,
-                                        );
-                                      },
-                                    ),
-                                    AnimatedPositioned(
-                                      top: data.fav ? 0 : -50,
-                                      curve: Curves.easeIn,
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      child: Icon(
-                                        Icons.bookmark,
-                                        size: 30,
-                                        color: MyColor.hightlightLight,
-                                      ),
-                                    )
-                                  ],
+
+                            return Obx(
+                              () {
+                                data!.fav = movieC.watchList.any(
+                                        (element) => element!.id == data.id)
+                                    ? true
+                                    : false;
+                                return GetBuilder(
+                                  init: movieC,
+                                  builder: (context) {
+                                    return Stack(
+                                      children: [
+                                        MovieBannerList(
+                                          id: data.id!.toInt(),
+                                          cases: 2,
+                                          index: index,
+                                          posterPath: data.posterPath,
+                                          doubleFavTap: () {
+                                            movieC.addWatchlist(
+                                              data,
+                                              index,
+                                              movieC.languageMovieList,
+                                            );
+                                          },
+                                        ),
+                                        AnimatedPositioned(
+                                          top: data.fav ? 0 : -50,
+                                          curve: Curves.easeIn,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          child: Icon(
+                                            Icons.bookmark,
+                                            size: 30,
+                                            color: MyColor.hightlightLight,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
                               },
                             );

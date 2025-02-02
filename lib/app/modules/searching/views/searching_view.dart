@@ -35,155 +35,156 @@ class SearchingView extends GetView<SearchingController> {
               backgroundColor: Colors.transparent,
               title: const Text("Searching movie"),
               actions: [
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      transitionAnimationController:
-                          controller.animationController,
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          height: 400,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                width: constraints.maxWidth * .5,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                  color: MyColor.hightlightDarkest,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Year",
-                                        style: TextStyle(
-                                            color: MyColor.hightlightDarkest,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      SizedBox(
-                                        width: constraints.maxWidth * .5,
-                                        height: constraints.maxHeight * .25,
-                                        child: Card(
-                                          elevation: 10,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: YearPicker(
-                                            currentDate:
-                                                controller.movieYear.value,
-                                            firstDate: DateTime(1970),
-                                            lastDate:
-                                                DateTime(DateTime.now().year),
-                                            selectedDate:
-                                                controller.movieYear.value,
-                                            onChanged: (value) {
-                                              controller.movieYear.value =
-                                                  value;
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Language",
-                                        style: TextStyle(
-                                            color: MyColor.hightlightDarkest,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      DropdownMenu(
-                                        hintText: "Movie Language",
-                                        width: constraints.maxWidth * .35,
-                                        menuStyle: MenuStyle(
-                                          elevation: WidgetStatePropertyAll(10),
-                                          shape: WidgetStatePropertyAll(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        dropdownMenuEntries: const [
-                                          DropdownMenuEntry(
-                                              value: "zh", label: "China"),
-                                          DropdownMenuEntry(
-                                              value: "id", label: "Indonesia"),
-                                          DropdownMenuEntry(
-                                              value: "en", label: "English"),
-                                          DropdownMenuEntry(
-                                              value: "th", label: "Thailand"),
-                                          DropdownMenuEntry(
-                                              value: "ja", label: "Japan"),
-                                        ],
-                                        initialSelection:
-                                            controller.movieLanguage.value,
-                                        onSelected: (value) {
-                                          controller.movieLanguage.value =
-                                              value;
-                                        },
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        "Filter Status",
-                                        style: TextStyle(
-                                            color: MyColor.hightlightDarkest,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      CupertinoSwitch(
-                                        value: controller.filterStatus.value,
-                                        activeColor: Colors.blue,
-                                        onChanged: (value) {
-                                          controller.filterStatus.value = value;
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  padding: EdgeInsets.zero,
-                  splashRadius: 25,
-                  icon: const Icon(
-                    Icons.menu_rounded,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                )
+                // IconButton(
+                //   onPressed: () {
+                //     showModalBottomSheet(
+                //       transitionAnimationController:
+                //           controller.animationController,
+                //       context: context,
+                //       builder: (context) {
+                //         return Container(
+                //           height: 400,
+                //           padding: const EdgeInsets.symmetric(horizontal: 20),
+                //           decoration: const BoxDecoration(
+                //             color: Colors.white,
+                //             borderRadius: BorderRadius.only(
+                //               topLeft: Radius.circular(20),
+                //               topRight: Radius.circular(20),
+                //             ),
+                //           ),
+                //           child: Column(
+                //             children: [
+                //               Container(
+                //                 margin: EdgeInsets.only(top: 10),
+                //                 width: constraints.maxWidth * .5,
+                //                 height: 5,
+                //                 decoration: BoxDecoration(
+                //                   color: MyColor.hightlightDarkest,
+                //                   borderRadius: BorderRadius.circular(100),
+                //                 ),
+                //               ),
+                //               const SizedBox(height: 10),
+                //               Row(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 mainAxisAlignment:
+                //                     MainAxisAlignment.spaceBetween,
+                //                 children: [
+                //                   Column(
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: [
+                //                       Text(
+                //                         "Year",
+                //                         style: TextStyle(
+                //                             color: MyColor.hightlightDarkest,
+                //                             fontSize: 20,
+                //                             fontWeight: FontWeight.bold),
+                //                       ),
+                //                       const SizedBox(height: 10),
+                //                       SizedBox(
+                //                         width: constraints.maxWidth * .5,
+                //                         height: constraints.maxHeight * .25,
+                //                         child: Card(
+                //                           elevation: 10,
+                //                           shape: RoundedRectangleBorder(
+                //                             borderRadius:
+                //                                 BorderRadius.circular(20),
+                //                           ),
+                //                           child: YearPicker(
+                //                             currentDate:
+                //                                 controller.movieYear.value,
+                //                             firstDate: DateTime(1970),
+                //                             lastDate:
+                //                                 DateTime(DateTime.now().year),
+                //                             selectedDate:
+                //                                 controller.movieYear.value,
+                //                             onChanged: (value) {
+                //                               controller.movieYear.value =
+                //                                   value;
+                //                             },
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                   const SizedBox(width: 10),
+                //                   Column(
+                //                     crossAxisAlignment: CrossAxisAlignment.end,
+                //                     children: [
+                //                       Text(
+                //                         "Language",
+                //                         style: TextStyle(
+                //                             color: MyColor.hightlightDarkest,
+                //                             fontSize: 20,
+                //                             fontWeight: FontWeight.bold),
+                //                       ),
+                //                       const SizedBox(height: 10),
+                //                       DropdownMenu(
+                //                         hintText: "Movie Language",
+                //                         width: constraints.maxWidth * .35,
+                //                         menuStyle: MenuStyle(
+                //                           elevation: WidgetStatePropertyAll(10),
+                //                           shape: WidgetStatePropertyAll(
+                //                             RoundedRectangleBorder(
+                //                               borderRadius:
+                //                                   BorderRadius.circular(10),
+                //                             ),
+                //                           ),
+                //                         ),
+                //                         dropdownMenuEntries: const [
+                //                           DropdownMenuEntry(
+                //                               value: "zh", label: "China"),
+                //                           DropdownMenuEntry(
+                //                               value: "id", label: "Indonesia"),
+                //                           DropdownMenuEntry(
+                //                               value: "en", label: "English"),
+                //                           DropdownMenuEntry(
+                //                               value: "th", label: "Thailand"),
+                //                           DropdownMenuEntry(
+                //                               value: "ja", label: "Japan"),
+                //                         ],
+                //                         initialSelection:
+                //                             controller.movieLanguage.value,
+                //                         onSelected: (value) {
+                //                           controller.movieLanguage.value =
+                //                               value;
+                //                         },
+                //                       ),
+                //                       const SizedBox(height: 10),
+                //                       Text(
+                //                         "Filter Status",
+                //                         style: TextStyle(
+                //                             color: MyColor.hightlightDarkest,
+                //                             fontSize: 20,
+                //                             fontWeight: FontWeight.bold),
+                //                       ),
+                //                       const SizedBox(height: 10),
+                //                       CupertinoSwitch(
+                //                         value: controller.filterStatus.value,
+                //                         activeColor: Colors.blue,
+                //                         onChanged: (value) {
+                //                           controller.filterStatus.value = value;
+                //                         },
+                //                       ),
+                //                     ],
+                //                   )
+                //                 ],
+                //               )
+                //             ],
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   padding: EdgeInsets.zero,
+                //   splashRadius: 25,
+                //   icon: const Icon(
+                //     Icons.menu_rounded,
+                //     color: Colors.white,
+                //     size: 40,
+                //   ),
+                // )
+              
               ],
             ),
             backgroundColor: Colors.transparent,

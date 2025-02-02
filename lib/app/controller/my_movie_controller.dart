@@ -231,16 +231,12 @@ class MyMovieController extends GetxController {
   void removefromWatchList(
     Movie data,
   ) {
-    for (var element in watchList) {
-      if (element!.id == data.id) {
-        element.fav = false;
-        element.description = null;
-        update();
-        watchList.removeWhere(
-        (element) => element!.id == data.id,
-      );
-      }
-    }
+    watchList.removeWhere(
+      (element) => element!.id == data.id,
+    );
+    watchList.refresh();
+    box.write(
+        "movieList", watchList.map((element) => element!.toJson()).toList());
   }
 
   void loadWatchList() {

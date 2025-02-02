@@ -43,7 +43,7 @@ class WatchlistView extends GetView<WatchlistController> {
                             direction: DismissDirection.startToEnd,
                             onDismissed: (direction) {
                               // print(direction);
-                              // movieC.removefromWatchList(data);
+                              movieC.removefromWatchList(data);
                             },
                             child: GestureDetector(
                               onTap: () {},
